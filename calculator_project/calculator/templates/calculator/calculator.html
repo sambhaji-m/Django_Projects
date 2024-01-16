@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .calculator {
+            background-color: #3498db;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            color: #000000;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .button-container button {
+            width: 23%;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin: 1%;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button.operator {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        button.equal {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        .history {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .history table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .history th, .history td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            color: #000; /* Set text color to black */
+        }
+
+        .history th {
+            background-color: #f2f2f2;
+        }
+
+        .history-item {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Calculator</h2>
+        <input type="text" id="expression" placeholder="Enter expression" required>
+        <div class="button-container">
+            <button onclick="appendToExpression('1')">1</button>
+            <button onclick="appendToExpression('2')">2</button>
+            <button onclick="appendToExpression('3')">3</button>
+            <button class="operator" onclick="appendToExpression('+')">+</button>
+
+            <button onclick="appendToExpression('4')">4</button>
+            <button onclick="appendToExpression('5')">5</button>
+            <button onclick="appendToExpression('6')">6</button>
+            <button class="operator" onclick="appendToExpression('-')">-</button>
+
+            <button onclick="appendToExpression('7')">7</button>
+            <button onclick="appendToExpression('8')">8</button>
+            <button onclick="appendToExpression('9')">9</button>
+            <button class="operator" onclick="appendToExpression('*')">*</button>
+
+            <button onclick="appendToExpression('0')">0</button>
+            <button onclick="appendToExpression('.')">.</button>
+            <button class="equal" onclick="calculateExpression()">=</button>
+            <button class="operator" onclick="appendToExpression('/')">/</button>
+        </div>
+        <div id="result"></div>
+        <button onclick="toggleHistory()">History</button>
+        <div class="history" id="history">
+            <h3>History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Expression</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="history-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+                function appendToExpression(value) {
+            document.getElementById('expression').value += value;
+        }
+
+        function clearExpression() {
+            document.getElementById('expression').value = '';
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function backspace() {
+            var expression = document.getElementById('expression').value;
+            document.getElementById('expression').value = expression.slice(0, -1);
+        }
+
+        function calculateExpression() {
+            var expression = document.getElementById('expression').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/calculate/?expression=' + encodeURIComponent(expression), true);
+            xhr.onload = function () {
+                var response = JSON.parse(xhr.responseText);
+                if ('error' in response) {
+                    document.getElementById('result').innerHTML = 'Error: ' + response.error;
+                } else {
+                    document.getElementById('result').innerHTML = 'Result: ' + response.result;
+                    // Clear input field after displaying the result
+                    document.getElementById('expression').value = '';
+                    // Add to history
+                    addToHistory(expression, response.result);
+                }
+            };
+            xhr.send();
+        }
+
+        function addToHistory(expression, result) {
+            var historyList = document.getElementById('history-list');
+            var historyItem = document.createElement('tr');
+            historyItem.innerHTML = '<td>' + expression + '</td><td>' + result + '</td>';
+            historyList.insertBefore(historyItem, historyList.firstChild);
+        }
+
+        function toggleHistory() {
+            var historySection = document.getElementById('history');
+            if (historySection.style.display === 'none') {
+            historySection.style.display = 'block';
+            } else {
+            historySection.style.display = 'none';
+            }
+            }
+</script>
+</body>
+</html>

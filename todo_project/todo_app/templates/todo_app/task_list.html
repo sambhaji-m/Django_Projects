@@ -1,0 +1,31 @@
+{% extends 'todo_app/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);">
+  <h2 style="text-align: center; color: #4CAF50;">Task List</h2>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <thead>
+          <tr style="background-color: #4CAF50; color: white; border-bottom: 2px solid #ddd;">
+              <th style="padding: 15px; text-align: left;">Title</th>
+              <th style="padding: 15px; text-align: left;">Description</th>
+              <th style="padding: 15px; text-align: left;">Status</th>
+              <th style="padding: 15px; text-align: left;">Actions</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for task in tasks %}
+              <tr style="border-bottom: 1px solid #ddd;">
+                  <td style="padding: 15px;">{{ task.title }}</td>
+                  <td style="padding: 15px;">{{ task.description }}</td>
+                  <td style="padding: 15px;">{% if task.completed %}Completed{% else %}Not Completed{% endif %}</td>
+                  <td style="padding: 15px;">
+                      <a href="{% url 'edit_task' task.id %}" style="color: #4CAF50; margin-right: 10px;">Edit</a>
+                      <a href="{% url 'delete_task' task.id %}" style="color: #E53935;">Delete</a>
+                  </td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  <a href="{% url 'add_task' %}" style="display: block; text-align: center; color: #4CAF50; margin-top: 20px; text-decoration: none; padding: 10px; border-radius: 5px; background-color: #fff; border: 2px solid #4CAF50; transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;">Add Task</a>
+</div>
+{% endblock %} 

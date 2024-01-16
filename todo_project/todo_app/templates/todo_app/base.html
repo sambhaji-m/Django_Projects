@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f0f0;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #4CAF50;
+        padding: 20px;
+        text-align: center;
+        color: white;
+    }
+
+    #content {
+        padding: 20px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    a {
+        color: #4CAF50;
+        margin-left: 10px;
+    }
+
+    footer {
+        background-color: #4CAF50;
+        padding: 10px;
+        text-align: center;
+        color: white;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+
+    </style>
+</head>
+<body>
+    {% block content %}
+
+    {% endblock %}
+</body>
+</html>
