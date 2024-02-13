@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: aqua;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        header h2 {
+            margin: 0;
+        }
+        header button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #sidebar {
+            position: fixed;
+            left: 0;
+            top: 60px; /* Adjusted for the height of the header */
+            width: 250px;
+            height: calc(100% - 60px);
+            background-color: #333;
+            color: #fff;
+            padding-top: 20px;
+            z-index: 999;
+            overflow-y: auto;
+        }
+        #sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #sidebar ul li {
+            padding: 10px;
+            border-bottom: 1px solid #555;
+        }
+        #sidebar ul li:hover {
+            background-color: #555;
+        }
+        #sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        #content {
+            margin-left: 250px;
+            padding: 20px;
+            padding-top: 80px; /* Adjusted for the height of the header */
+            transition: margin-left 0.5s;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            background: #fff;
+            border: 2px solid #000;
+            /* border-radius: 50px; */
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: left;
+        }
+        /* tbody tr:nth-child(even) {
+            background-color: #f2f2f2; 
+        }*/
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 200px;
+            }
+            #content {
+                margin-left: 200px;
+            }
+        }
+        @media (max-width: 576px) {
+            #sidebar {
+                width: 150px;
+            }
+            #content {
+                margin-left: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Inquiry Reports</h2>
+        <a href="{% url 'index' %}">
+          <button id="logoutButton">Dashboard</button>
+        </a>
+    </header>
+    <div id="sidebar">
+        <ul> 
+            <li><a href="{% url 'home' %}">Dashboard</a></li>
+            <li><a href="{% url 'login' %}">View Inquiry</a></li>
+            <li><a href="{% url 'enquiry' %}">Create Inquiry</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Subject Type</th>
+                    <th>Email Address</th>
+                    <th>Phone Number</th>
+                    <th>Message</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.subject_type }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.mobile_number }}</td>
+                    <td>{{ item.message }}</td>
+                    <td>Action Button</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <footer>
+        <p>&copy; Hashtrix Technologies Pvt Ltd</p>
+    </footer>
+</body>
+</html>

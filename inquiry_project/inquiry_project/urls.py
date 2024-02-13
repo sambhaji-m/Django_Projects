@@ -17,16 +17,23 @@ from django.contrib import admin
 from django.urls import path
 from inquiries import views
 from inquiries.forms import enquiry
-from inquiries.views import my_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.LoginPage,name='login'),
     path('signup/',views.SignupPage,name='signup'),
     # path('home/',views.HomePage,name='home'),
-    # path('home/',views.HomePage, name='home'),
-    path('home/', views.my_view, name='home'),
+    # path('home/', views.my_view, name='home'),  using this backend data show on dashbord also 
     path('logout/',views.LogoutPage,name='logout'),
     path('enquiry/', views.enquiry_view, name='enquiry'),
-]
+    # path('view_inq/', views.view_inq, name='view_inq'),
+    path('blank/', views.view_inq1, name='blank'),
 
+
+
+
+    path('index/', views.index, name='index'),
+    path('blank/', views.blank, name='blank'),
+    path('table/', views.table, name='table'),
+    
+]

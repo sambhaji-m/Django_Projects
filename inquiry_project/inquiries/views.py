@@ -11,8 +11,9 @@ from django.contrib import messages
 
 
 @login_required(login_url='login')
-def HomePage(request):
-    return render(request,'home.html')
+
+# def HomePage(request):
+#     return render(request,'home.html')
 
 
 def enquiry_view(request):
@@ -53,7 +54,7 @@ def LoginPage(request):
         user=authenticate(request,username = username,password=pass1)
         if user is not None:
             login(request,user)
-            return redirect('home')
+            return redirect('index')
         else:
             # return HttpResponse("username or password is incorrect!")
             error = "Invalid username or password. Please try again."
@@ -69,11 +70,66 @@ def LogoutPage(request):
 
 
 
+
+
+
+
+def index(request):
+    return render(request, 'index.html')
+
+
+def blank(request):
+    return render(request, 'blank.html')
+
+
+def table(request):
+    return render(request, 'table.html')
+
+
+
+# def blank(request):
+#     return render(request, 'inquiries/blank.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # show data on webpage from database
 
 
-# myapp/views.py
+# def my_view(request):
+#     data = enquiry.objects.all()
+#     return render(request, 'home.html', {'data': data})
 
-def my_view(request):
+
+# show backend data on view page
+# on view_inq page
+# def view_inq(request):
+#     data = enquiry.objects.all()
+#     return render(request, 'view_inq.html', {'data': data})
+
+
+def view_inq1(request):
     data = enquiry.objects.all()
-    return render(request, 'home.html', {'data': data})
+    return render(request, 'blank.html', {'data': data})
