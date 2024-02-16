@@ -130,6 +130,45 @@ def table(request):
 #     return render(request, 'view_inq.html', {'data': data})
 
 
+# def view_inq1(request):
+#     data = enquiry.objects.all()
+#     return render(request, 'blank.html', {'data': data})
+
+
 def view_inq1(request):
     data = enquiry.objects.all()
+
+    if request.method == 'GET':
+        # Handle filter submission
+        name_filter = request.GET.get('name', None)
+        subject_type_filter = request.GET.get('subject_type', None)
+        email_filter = request.GET.get('email', None)
+        mobile_number_filter = request.GET.get('phone_number', None)
+
+        if name_filter:
+            data = data.filter(name__icontains=name_filter)
+        if subject_type_filter:
+            data = data.filter(subject_type=subject_type_filter)
+        if email_filter:
+            data = data.filter(email__icontains=email_filter)
+        if mobile_number_filter:
+            data = data.filter(mobile_number__icontains=mobile_number_filter)
+
     return render(request, 'blank.html', {'data': data})
+
+
+
+# delete entry from database
+
+def delete_data(request, data_id):
+    try:
+        # Retrieve the object from the database
+        data = enquiry.objects.get(id=data_id)
+        # Delete the object
+        data.delete()
+        # Redirect to a success page, or a page displaying the remaining data
+        return redirect('blank')  # You need to define the URL name for the success page
+    except enquiry.DoesNotExist:
+        # Handle the case where the object does not exist
+        return redirect('blank')  # You need to define the URL name for the error page
+

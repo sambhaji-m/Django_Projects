@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from inquiries import views
 from inquiries.forms import enquiry
+from inquiries.views import delete_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,5 +36,11 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('blank/', views.blank, name='blank'),
     path('table/', views.table, name='table'),
+
+
+
+    # delete data from database
+    path('delete/<int:data_id>/', delete_data, name='delete_data'),
+    
     
 ]

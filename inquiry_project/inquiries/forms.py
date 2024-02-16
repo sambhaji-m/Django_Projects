@@ -21,6 +21,6 @@ class EnquiryForm(forms.ModelForm):
             'subject_type': forms.Select(attrs={'class': 'form-control'  }),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email'}),
             'mobile_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your mobile number'}),
-            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 8,'placeholder': 'Enter your message', 'style': 'width: 100%;'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 8,'placeholder': 'Enter your message', }),
         }
 

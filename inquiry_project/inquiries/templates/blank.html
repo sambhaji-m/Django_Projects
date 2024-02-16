@@ -39,15 +39,22 @@
 
     <style>
         #content {
+            /* display: flex; */
+            /* flex-direction: column; */
             padding: 60px;
             padding-top: 0px;
+            display: grid;
+            flex-direction: column;
+            width: 100%; /* or any desired width */
+            max-height: 500px; /* or any desired max-height */
+            overflow: auto
         }
 
         table {
             font-family: Arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
-            background: #fff;
+            background: #191C24;
             border: 2px solid #000;
             /* border-radius: 50px; */
         }
@@ -57,7 +64,9 @@
             
         }
         th {
-            background-color: #f0f0f0;
+            
+            background-color: #191C24;
+            color: #fff;
             font-weight: bold;
             text-align: left;
         }
@@ -96,6 +105,38 @@
                 padding: 5px;
             }
         }
+
+
+        form input[type="text"],[type="submit"], [type="select"] {
+        margin-bottom: 100px;
+        background-color: rgb(175, 164, 164);
+        margin-left: 10px;
+        align-items: center;
+        
+        }
+
+
+        td.action-btn button{
+            color: red;
+            background-color: transparent;
+            border: none;
+            font-size: medium
+        }
+
+        tr:hover{
+            color: #000;
+            font-weight: 500;
+              background-color: rgba(255,255,255,0.47);
+            }
+
+
+
+
+
+
+
+
+  
 
     </style>
 
@@ -189,9 +230,28 @@
             <div class="container-fluid pt-4 px-4">
                 <div class="row vh-100 bg-secondary rounded align-items-center justify-content-center mx-0">
                     <div id="content">
+
+
+                        <form method="GET">
+                            <input type="text" name="name" placeholder="Name">
+                            <select type = "select" name="subject_type" >
+                                <option value="">Select Subject Type</option>
+                                <option value="Job Opening">Job Opening</option>
+                                <option value="Current Project">Current Project</option>
+                                <option value="Hire Developer">Hire Developer</option>
+                            <input type="text" name="email" placeholder="Email">
+                            <!-- <input type="text" name="phone_number" placeholder="Phone Number"> -->
+                            <button type="submit">Filter</button>
+                        </form>
+
+
+                        
+
+
                         <table>
                             <thead>
                                 <tr>
+                                    <!-- <th>check</th> -->
                                     <th>Name</th>
                                     <th>Subject Type</th>
                                     <th>Email Address</th>
@@ -203,12 +263,22 @@
                             <tbody>
                                 {% for item in data %}
                                 <tr>
+                                    <!-- <th scope="col"><input class="form-check-input" type="checkbox"></th> -->
+
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.subject_type }}</td>
                                     <td>{{ item.email }}</td>
                                     <td>{{ item.mobile_number }}</td>
                                     <td>{{ item.message }}</td>
-                                    <td>Action </td>
+                                    <!-- <td>Action </td> -->
+                                    <td class="action-btn">
+                                        <form action="{% url 'delete_data' item.id %}" method="post" style="height: 40px;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                    
+                                    <!-- <td><a class="btn btn-sm btn-primary" href="">Delete</a></td> -->
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -220,8 +290,10 @@
                 </div>
             </div>
             <!-- Blank End -->
+        
 
 
+           
 
 
 
