@@ -86,54 +86,13 @@ def table(request):
     return render(request, 'table.html')
 
 
-
-# def blank(request):
-#     return render(request, 'inquiries/blank.html')
-
+def accept_inq(request):
+    return render(request, 'accept_inq.html')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# show data on webpage from database
-
-
-# def my_view(request):
-#     data = enquiry.objects.all()
-#     return render(request, 'home.html', {'data': data})
 
 
 # show backend data on view page
-# on view_inq page
-# def view_inq(request):
-#     data = enquiry.objects.all()
-#     return render(request, 'view_inq.html', {'data': data})
-
-
-# def view_inq1(request):
-#     data = enquiry.objects.all()
-#     return render(request, 'blank.html', {'data': data})
-
 
 def view_inq1(request):
     data = enquiry.objects.all()
@@ -155,6 +114,9 @@ def view_inq1(request):
             data = data.filter(mobile_number__icontains=mobile_number_filter)
 
     return render(request, 'blank.html', {'data': data})
+    
+
+
 
 
 
@@ -171,4 +133,40 @@ def delete_data(request, data_id):
     except enquiry.DoesNotExist:
         # Handle the case where the object does not exist
         return redirect('blank')  # You need to define the URL name for the error page
+
+
+# delete data from accept_inq page
+def delete_data_accept(request, data_id):
+    try:
+        # Retrieve the object from the database
+        data = enquiry.objects.get(id=data_id)
+        # Delete the object
+        data.delete()
+        # Redirect to a success page, or a page displaying the remaining data
+        return redirect('accept_inq')  # You need to define the URL name for the success page
+    except enquiry.DoesNotExist:
+        # Handle the case where the object does not exist
+        return redirect('accept_inq')  
+
+
+
+
+# accept inquery 
+    
+
+
+def accept_inquiry(request, inquiry_id):
+    inquiry = enquiry.objects.get(id=inquiry_id)
+    inquiry.accepted = True
+    inquiry.save()
+    return redirect('blank')
+
+
+
+def accepted_inquiries(request):
+    accepted_inquiries = enquiry.objects.filter(accepted=True)
+    return render(request, 'accept_inq.html', {'accepted_inquiries': accepted_inquiries})
+
+
+
 

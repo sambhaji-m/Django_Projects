@@ -262,8 +262,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in data %}
-                                {% if not item.accepted %}
+                                {% for item in accepted_inquiries %}
                                     <!-- <th scope="col"><input class="form-check-input" type="checkbox"></th> -->
 
                                     <td>{{ item.name }}</td>
@@ -272,23 +271,10 @@
                                     <td>{{ item.mobile_number }}</td>
                                     <td>{{ item.message }}</td>
                                     <!-- <td>Action </td> -->
-                                    <td class="action-btn"  {% if item.accepted %} style="background-color: rgba(0, 128, 0, 0.267)" {% endif %}>
-                                        <form action="{% url 'delete_data' item.id %}" method="post">
+                                    <td class="action-btn">
+                                        <form action="{% url 'delete_data_accept' item.id %}" method="post">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-sm btn-danger">{% if item.accepted %}
-                                                Solved
-                                            {% else %}
-                                                Delete
-                                            {% endif %}
-                                            </button>  
-                                        </form>
-
-                                        <form action="{% url 'accept_inquiry' item.id %}" method="post">
-                                            {% csrf_token %}
-                                            {% if not item.accepted %}
-                                            <button type="submit" class="btn btn-sm btn-danger">Accept</button>
-                                            {% endif %}
-
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>  
                                         </form>
                                         
                                     </td>
@@ -297,7 +283,6 @@
                                     
                                    
                                 </tr>
-                                {% endif %}
                                 {% endfor %}
                             </tbody>
                         </table>
