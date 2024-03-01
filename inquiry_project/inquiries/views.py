@@ -12,9 +12,6 @@ from django.contrib import messages
 
 @login_required(login_url='login')
 
-# def HomePage(request):
-#     return render(request,'home.html')
-
 
 def enquiry_view(request):
     if request.method == 'POST':
@@ -165,8 +162,22 @@ def accept_inquiry(request, inquiry_id):
 
 def accepted_inquiries(request):
     accepted_inquiries = enquiry.objects.filter(accepted=True)
-    return render(request, 'accept_inq.html', {'accepted_inquiries': accepted_inquiries})
+    if request.method == 'GET':
+        # Handle filter submission
+        name_filter = request.GET.get('name', None)
+        subject_type_filter = request.GET.get('subject_type', None)
+        email_filter = request.GET.get('email', None)
+        mobile_number_filter = request.GET.get('phone_number', None)
 
+        if name_filter:
+            accepted_inquiries = accepted_inquiries.filter(name__icontains=name_filter)
+        if subject_type_filter:
+            accepted_inquiries = accepted_inquiries.filter(subject_type=subject_type_filter)
+        if email_filter:
+            accepted_inquiries = accepted_inquiries.filter(email__icontains=email_filter)
+        if mobile_number_filter:
+            accepted_inquiries = accepted_inquiries.filter(mobile_number__icontains=mobile_number_filter)
+    return render(request, 'accept_inq.html', {'accepted_inquiries': accepted_inquiries})
 
 
 

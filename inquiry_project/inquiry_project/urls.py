@@ -27,7 +27,6 @@ urlpatterns = [
     # path('home/', views.my_view, name='home'),  using this backend data show on dashbord also 
     path('logout/',views.LogoutPage,name='logout'),
     path('enquiry/', views.enquiry_view, name='enquiry'),
-    # path('view_inq/', views.view_inq, name='view_inq'),
     path('blank/', views.view_inq1, name='blank'),
     path('accept_inq/', views.accepted_inquiries, name="accept_inq"),
 
