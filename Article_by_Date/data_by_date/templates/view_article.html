@@ -1,0 +1,211 @@
+<!-- view_article.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Articles</title>
+    <!-- Include jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Include CSS for jQuery UI Datepicker -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* background-color: #002b53; */
+            background-color: #0693e3;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+
+        .date-pick{
+            height: 100px;
+            /* background-color: #0693e3; */
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #0693e3;
+            color: white;
+            font-size: 18px;
+            padding: 20px;
+            border-radius: 8px;
+            /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+            box-shadow: 0 0 20px #ccc;
+        }
+
+
+        
+        label {
+            margin-left: 20px;
+            padding-top: 10px;
+            color: #fff;
+            font-size: 20px;
+            display: block;
+            margin-bottom: 15px;
+
+        }
+        #datepicker {
+            padding: 8px;
+            width: calc(100% - 200px); 
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        #clearDate {
+            padding: 8px 15px;
+            margin-left: 10px;
+            border: none;
+            background-color: #f44336;;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #clearDate:hover {
+            background-color: #f44336;;
+        }
+        #articles-container {
+            /* border: 1px solid #ccc; */
+
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+
+
+            background-color: #0693e3;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+            box-shadow: 0 0 20px #ccc;
+        }
+        .article {
+            margin-bottom: 20px;
+        }
+        .article h2 {
+            margin-top: 0;
+        }
+
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>View Articles</h1>
+
+    
+    <div class="date-pick">
+        <!-- Calendar for selecting date -->
+    <label for="datepicker">Select Date:</label>
+    <input type="text" id="datepicker">
+    <button id="clearDate">Clear</button> <!-- Clear button -->
+    </div>
+    
+    <!-- Container to display articles -->
+    <div id="articles-container">
+        <!-- Articles will be displayed here -->
+    
+    </div>
+
+</div>
+
+<!-- JavaScript to initialize the Datepicker and handle article fetching -->
+<script>
+    $(function() {
+        var today = new Date();
+        var threeMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate());
+        
+
+        // Initialize Datepicker with date range limitations
+        $("#datepicker").datepicker({
+            dateFormat: 'yy-mm-dd',
+            minDate: threeMonthsAgo,
+            maxDate: today,
+            onSelect: function(dateText) {
+                // When a date is selected, fetch articles for that date
+                fetchArticles(dateText);
+            }
+            
+        });
+
+        // Function to clear selected date
+        $("#clearDate").click(function() {
+            $("#datepicker").val(''); // Clear the value of the date input field
+            $("#articles-container").empty(); // Clear the articles container
+            checkEmptyContainer(); // Check if container is empty after clearing date
+        });
+
+        // Function to fetch articles for a given date
+        function fetchArticles(selectedDate) {
+            // AJAX request to fetch articles for the selected date
+            $.ajax({
+                url: "/fetch_articles/",  // Modify URL if necessary
+                data: {
+                    date: selectedDate
+                },
+                success: function(data) {
+                    // Render the fetched articles in the articles container
+                    renderArticles(data);
+                    checkEmptyContainer(); // Check if container is empty after fetching articles
+                }
+            });
+        }
+
+        // Function to render articles on the webpage
+        function renderArticles(data) {
+            // Clear existing articles
+            $("#articles-container").empty();
+
+            // Append new articles to the container
+            if (data.articles && data.articles.length > 0) {
+                var articlesHtml = '';
+                $.each(data.articles, function(index, article) {
+                    articlesHtml += '<div class="article">';
+                    articlesHtml += '<h2>' + article.title + '</h2>';
+                    articlesHtml += '<p>' + article.content + '</p>';
+                    articlesHtml += '</div>';
+                });
+                $("#articles-container").html(articlesHtml);
+            }
+        }
+
+        // Function to check if articles container is empty
+        function checkEmptyContainer() {
+            if ($("#articles-container").is(":empty")) {
+                $("#articles-container").html('<p>Select date to view articles.</p>');
+            }
+        }
+    });
+</script>
+
+
+
+<a href="{% url 'main' %}" style="text-decoration:none" >main page</a>
+
+</body>
+</html>

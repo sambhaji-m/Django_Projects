@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <!-- CSS for calendar view -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI library -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0693e3;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #0693e3;
+            color: white;
+            font-size: 18px;
+            padding: 20px;
+            border-radius: 8px;
+            /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+            box-shadow: 0 0 50px #ccc;
+        }
+
+        form input[type="date"],
+        form input[type="text"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            resize: none;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        form textarea {
+            height: 120px;
+        }
+
+        .btn{
+            display: flex;
+            justify-content: space-around;
+        }
+
+        form button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .messages {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .messages p {
+            background-color: #f2dede;
+            color: #a94442;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+
+
+                /* Styling for the clear button */
+                #clearForm {
+            padding: 8px 15px;
+            margin-left: 10px;
+            border: none;
+            background-color: #f44336; /* Red color */
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+        #clearForm:hover {
+            background-color: #d32f2f; /* Darker red color on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Articles</h1>
+
+    {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li><p>{{ message }}</p></li>
+          {% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="btn">
+            <button type="submit">Submit</button>
+            <button type="button" id="clearForm">Clear</button>
+        </div>
+    </form>
+
+
+    <a href="{% url 'view_article' %}">View Articles</a>
+
+
+
+
+    <script>    
+             $(document).ready(function() {
+         // Function to clear form fields
+         $("#clearForm").click(function() {
+             $("form")[0].reset(); // Reset form fields
+         });
+        });
+        $(document).ready(function() {
+            var today = new Date();
+            var threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(today.getMonth() - 3);
+            
+            // Set the maximum date to today
+            $('[type="date"]').attr('max', today.toISOString().split('T')[0]);
+
+            // Set the minimum date to 3 months ago
+            $('[type="date"]').attr('min', threeMonthsAgo.toISOString().split('T')[0]);
+        });
+    </script>
+</body>
+</html>
